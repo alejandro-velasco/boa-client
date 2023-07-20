@@ -3,7 +3,7 @@ import typer
 from rich.console import Console
 from rich.logging import RichHandler
 import sys
-from jobs import BuildJob
+from ci_engine.jobs import BuildJob
 
 def set_log_level(level):
     if level == 'INFO':
@@ -25,6 +25,9 @@ def main(file: str, log_level: str = 'INFO'):
     set_log_level(log_level)
     build_job = BuildJob(file=file)
     build_job.execute_job()
+
+def entrypoint():
+    typer.run(main)
 
 if __name__ == "__main__":
     typer.run(main)

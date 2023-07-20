@@ -3,7 +3,7 @@ import subprocess
 import logging
 import rich
 import sys
-from schemas import BuildJobSchema
+from ci_engine.schemas import BuildJobSchema
 
 class BuildJob:
     def __init__(self, file) -> None:
