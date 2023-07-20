@@ -8,7 +8,6 @@ from ci_engine.schemas import BuildJobSchema
 class BuildJob:
     def __init__(self, file) -> None:
         self.file = self._get_file(file)
-        self._validate_schema()
 
     def _get_file(self, file):
         with open(file) as f:
@@ -20,6 +19,7 @@ class BuildJob:
         build_job_schema.validate(self.file)
 
     def execute_job(self):
+        self._validate_schema()
         stages = self.file['stages']
 
         for stage_name, stage_spec in stages.items():
