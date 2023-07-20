@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 pyyaml = "*"
 schema = "*"
+typer = "*"
+rich = "*"
 
 [dev-packages]
 

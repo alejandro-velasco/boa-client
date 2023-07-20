@@ -6,11 +6,17 @@ metadata:
 
 stages:
   build:
-    script: |
-      echo building...
+    script:
+      - |
+        echo building...
+        ls -la
+        echo still building...
+        sleep 2
+      - echo next...
 
   deploy:
-    script: |
-      echo deploying...
+    script: 
+      - |
+        echo deploying...
 
     
