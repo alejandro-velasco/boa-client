@@ -53,6 +53,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN set -ex &&                \
     microdnf install -y       \
         shadow-utils          \
+        git                   \
         python3.11            \
         python3.11-pip &&     \
     python3.11 -m pip install \
@@ -77,6 +78,8 @@ RUN set -ex                                    && \
     deactivate
 
 USER 1000
+
+WORKDIR /home/boa-client
 
 ENTRYPOINT ["/entrypoint.sh"]
 
