@@ -3,6 +3,7 @@ import subprocess
 import logging
 import rich
 from boa_client.schemas import BoaJobSchema
+from boa_client.scm import GitClient
 
 class BoaJob:
     def __init__(self, file) -> None:
@@ -14,6 +15,11 @@ class BoaJob:
 
     def execute_job(self):
         self._validate_schema()
+
+        if "git" in self.file:
+            git_client = GitClient(self.file["git"])
+            git_client.checkout_scm()
+
         stages = self.file['stages']
 
         for stage_name, stage_spec in stages.items():

@@ -1,6 +1,6 @@
 import logging
 import rich
-from schema import Schema, Regex, SchemaError
+from schema import Schema, Regex, Optional, SchemaError
 
 class BoaJobSchema:
     
@@ -13,6 +13,14 @@ class BoaJobSchema:
                 "name": str,
                 "namespace": str,
             },
+            Optional("git"): [
+                {
+                    Optional("name"): str,
+                    "url": str,
+                    Optional("branch"): str,
+                    Optional("submodules"): bool
+                }
+            ],
             "stages": {
                 # Any alphanumeric, or underscore character combination is valid
                 Regex(r"^[a-zA-Z0-9_]*$"): {

@@ -3,6 +3,15 @@ kind: BoaJob
 metadata:
   name: test-build
   namespace: test
+git:
+  - name: lserver
+    url: 'https://github.com/johnpapa/lite-server.git'
+    branch: master
+    submodules: True
+  - name: lserver2
+    url: 'https://github.com/johnpapa/lite-server.git'
+    branch: master
+    submodules: True
 stages:
   build:
     script:
