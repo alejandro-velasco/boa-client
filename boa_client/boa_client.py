@@ -3,6 +3,7 @@ import typer
 from rich.console import Console
 from rich.logging import RichHandler
 import sys
+import yaml
 from boa_client.jobs import BoaJob
 
 def set_log_level(level):
@@ -23,8 +24,10 @@ def set_log_level(level):
 
 def main(file: str, log_level: str = 'INFO'):
     set_log_level(log_level)
-    build_job = BoaJob(file=file)
-    build_job.execute_job()
+    with open(file) as f:
+        # use safe_load instead load
+        build_job = BoaJob(file=yaml.safe_load(f))
+        build_job.execute_job()
 
 def entrypoint():
     typer.run(main)

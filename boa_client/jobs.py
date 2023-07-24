@@ -6,12 +6,7 @@ from boa_client.schemas import BoaJobSchema
 
 class BoaJob:
     def __init__(self, file) -> None:
-        self.file = self._get_file(file)
-
-    def _get_file(self, file):
-        with open(file) as f:
-            # use safe_load instead load
-            return yaml.safe_load(f)
+        self.file = file
         
     def _validate_schema(self):
         build_job_schema = BoaJobSchema()
