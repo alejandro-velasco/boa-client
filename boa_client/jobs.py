@@ -2,10 +2,9 @@ import yaml
 import subprocess
 import logging
 import rich
-import sys
-from ci_engine.schemas import BuildJobSchema
+from boa_client.schemas import BoaJobSchema
 
-class BuildJob:
+class BoaJob:
     def __init__(self, file) -> None:
         self.file = self._get_file(file)
 
@@ -15,7 +14,7 @@ class BuildJob:
             return yaml.safe_load(f)
         
     def _validate_schema(self):
-        build_job_schema = BuildJobSchema()
+        build_job_schema = BoaJobSchema()
         build_job_schema.validate(self.file)
 
     def execute_job(self):
@@ -34,10 +33,10 @@ class BuildJob:
     
             output, errors = p.communicate()
 
-            if errors:
+            if p.returncode != 0:
                 # handle error
                 logging.error(errors)
-                sys.exit(1)
+                raise SystemExit(1)
 
             logging.info(f'{output}')
     

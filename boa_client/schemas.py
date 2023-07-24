@@ -2,12 +2,12 @@ import logging
 import rich
 from schema import Schema, Regex, SchemaError
 
-class BuildJobSchema:
+class BoaJobSchema:
     
     def __init__(self) -> None:
         self.schema = Schema({
             "apiVersion": str,
-            "kind": "BuildJob",
+            "kind": "BoaJob",
             "metadata": {
                 "name": str,
                 "namespace": str,
@@ -22,8 +22,9 @@ class BuildJobSchema:
     def validate(self, file):
         try:
             logging.info('Validating ci file...')
-            self.schema.validate(file)
+            data = self.schema.validate(file)
             logging.info('ci file valid!')
+            return data
         except SchemaError as se:
             logging.error('ci file is Invalid!')
             raise se

@@ -3,7 +3,7 @@ import typer
 from rich.console import Console
 from rich.logging import RichHandler
 import sys
-from ci_engine.jobs import BuildJob
+from boa_client.jobs import BoaJob
 
 def set_log_level(level):
     if level == 'INFO':
@@ -23,7 +23,7 @@ def set_log_level(level):
 
 def main(file: str, log_level: str = 'INFO'):
     set_log_level(log_level)
-    build_job = BuildJob(file=file)
+    build_job = BoaJob(file=file)
     build_job.execute_job()
 
 def entrypoint():
