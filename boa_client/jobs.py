@@ -2,8 +2,9 @@ import yaml
 import subprocess
 import logging
 import rich
+from boa_client.scm import clone
 from boa_client.schemas import BoaJobSchema
-from boa_client.scm import GitClient
+
 
 class BoaJob:
     def __init__(self, file) -> None:
@@ -17,8 +18,11 @@ class BoaJob:
         self._validate_schema()
 
         if "git" in self.file:
-            git_client = GitClient(self.file["git"])
-            git_client.checkout_scm()
+            for repo in self.file['git']:
+                clone(url=repo.get("url"),
+                      submodules=repo.get("submodules", False),
+                      branch=repo.get("branch", ""),
+                      name=repo.get("name", ""))
 
         stages = self.file['stages']
 
