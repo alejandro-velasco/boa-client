@@ -1,9 +1,6 @@
-import logging
 import typer
-from typing_extensions import Annotated
-import sys
 import os
-import yaml
+from typing_extensions import Annotated
 from boa_client.jobs import BoaJob
 from boa_client.scm import GitRepository
 from boa_client.logging import Logger
