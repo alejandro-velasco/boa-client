@@ -19,9 +19,9 @@ def main(
                      branch=branch,
                      name=name)
 
-    # Read and execute boa job
+    root = f'{os.getcwd()}/{name}'
     build_job = BoaJob(file=file, 
-                       root=f'{os.getcwd()}/{name}')
+                       root=root)
     build_job.execute_job()
 
 def entrypoint():
