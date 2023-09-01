@@ -1,33 +1,28 @@
-import logging
 import typer
-from rich.console import Console
-from rich.logging import RichHandler
-import sys
-import yaml
+import os
+from typing_extensions import Annotated
 from boa_client.jobs import BoaJob
+from boa_client.scm import GitRepository
+from boa_client.logging import Logger
 
-def set_log_level(level):
-    if level == 'INFO':
-        log_level=logging.INFO
-    elif level == 'WARN':
-        log_level=logging.WARN
-    elif level == 'DEBUG':
-        log_level=logging.DEBUG
-    else:
-        logging.error('Log level {level} is not a valid option. Please choose between "INFO", "WARN" or "DEBUG"')
-        sys.exit(1)
+def main(    
+    url: Annotated[str, typer.Option()],
+    submodules: bool = False,
+    branch: str = "",
+    name: str = "workspace",
+    file: str = 'boa.yaml',
+    log_level: str = 'INFO'
+):
+    logger = Logger(level=log_level)   
+    repository = GitRepository(url=url)
+    repository.clone(submodules=submodules,
+                     branch=branch,
+                     name=name)
 
-    stderr = Console(file=sys.stderr)
-    logging.basicConfig(level=log_level,
-                        format='%(asctime)s:%(levelname)s:%(name)s: %(message)s',
-                        handlers=[RichHandler(console=stderr)])
-
-def main(file: str, log_level: str = 'INFO'):
-    set_log_level(log_level)
-    with open(file) as f:
-        # use safe_load instead load
-        build_job = BoaJob(file=yaml.safe_load(f))
-        build_job.execute_job()
+    root = f'{os.getcwd()}/{name}'
+    build_job = BoaJob(file=file, 
+                       root=root)
+    build_job.execute_job()
 
 def entrypoint():
     typer.run(main)

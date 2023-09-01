@@ -1,26 +1,42 @@
 import yaml
 import subprocess
 import logging
-import rich
+import os
+from boa_client.scm import GitRepository
 from boa_client.schemas import BoaJobSchema
-from boa_client.scm import GitClient
+
 
 class BoaJob:
-    def __init__(self, file) -> None:
+    def __init__(self, file, root) -> None:
+        self.root = root
         self.file = file
-        
+        self.body = self._load_file()
+
+    def _load_file(self):
+        with open(f'{self.root}/{self.file}') as f:
+            return yaml.safe_load(f)
+
     def _validate_schema(self):
         build_job_schema = BoaJobSchema()
-        build_job_schema.validate(self.file)
+        build_job_schema.validate(self.body)
+
+    def _set_root(self):
+        logging.info(f'Setting current working directory to {self.root}')
+        os.chdir(self.root)        
 
     def execute_job(self):
         self._validate_schema()
+        self._set_root()
+        self._load_file()
 
-        if "git" in self.file:
-            git_client = GitClient(self.file["git"])
-            git_client.checkout_scm()
+        if "git" in self.body:
+            for git_config in self.body['git']:
+                repository = GitRepository(url=git_config.get("url"))
+                repository.clone(submodules=git_config.get("submodules", False),
+                                 branch=git_config.get("branch", ""),
+                                 name=git_config.get("name", ""))
 
-        stages = self.file['stages']
+        stages = self.body['stages']
 
         for stage_name, stage_spec in stages.items():
             self.execute_stage(stage_name=stage_name, stage_spec=stage_spec)
