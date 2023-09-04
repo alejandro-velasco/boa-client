@@ -8,6 +8,7 @@ pyyaml = "*"
 schema = "*"
 typer = "*"
 rich = "*"
+redis = "*"
 
 [dev-packages]
 
