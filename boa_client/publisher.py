@@ -1,23 +1,74 @@
 import os
-import redis
+import requests
 import logging
 
 class BoaClientPublisher:
-    def __init__(self, name: str):
-        # connect with redis server
-        self.client = redis.Redis(host=os.getenv('REDIS_HOSTNAME'), 
-                                  port=os.getenv('REDIS_PORT', '6379'), 
-                                  db=0)
+    def __init__(self, name: str, server: str, execution: str, organization_id: str):
+        self.server=server
         self.name = name
+        self.execution = execution
+        self.organization_id = organization_id
 
     def publish_success(self):
-        self.client.publish(self.name, 'SUCCEEDED')
+        url = f'{self.server}/api/jobs/status'
+        headers = {'Content-Type': 'application/json'}
+        json = {
+            'organization_id': self.organization_id,
+            'execution': self.execution,
+            'job_name': self.name,
+            'status': 'succeeded'
+        }
+        
+        resp = requests.post(url, 
+                             json=json,
+                             headers=headers)
+        
+        logging.info(resp.text)
 
     def publish_failure(self):
-        self.client.publish(self.name, 'FAILED')
+        url = f'{self.server}/api/jobs/status'
+        headers = {'Content-Type': 'application/json'}
+        json = {
+            'organization_id': self.organization_id,
+            'execution': self.execution,
+            'job_name': self.name,
+            'status': 'failed'
+        }
+        
+        resp = requests.post(url, 
+                             json=json,
+                             headers=headers)
+        
+        logging.info(resp.text)
 
     def publish_abort(self):
-        self.client.publish(self.name, 'ABORTED')
+        url = f'{self.server}/api/jobs/status'
+        headers = {'Content-Type': 'application/json'}
+        json = {
+            'organization_id': self.organization_id,
+            'execution': self.execution,
+            'job_name': self.name,
+            'status': 'aborted'
+        }
+        
+        resp = requests.post(url, 
+                             json=json,
+                             headers=headers)
+        
+        logging.info(resp.text)
 
     def publish_running(self):
-        self.client.publish(self.name, 'RUNNING')
+        url = f'{self.server}/api/jobs/status'
+        headers = {'Content-Type': 'application/json'}
+        json = {
+            'organization_id': self.organization_id,
+            'execution': self.execution,
+            'job_name': self.name,
+            'status': 'running'
+        }
+        
+        resp = requests.post(url, 
+                             json=json,
+                             headers=headers)
+        
+        logging.info(resp.text)

@@ -42,9 +42,12 @@ python3 -m pip install --upgrade dist/boa_client-$VERSION-py3-none-any.whl
 ```bash
 ╭─ Options ─────────────────────────────────────────────────────────────────────────────────────────╮
 │ *  --url                              TEXT  [default: None] [required]                            │
+│ *  --name                             TEXT  [default: None] [required]                            │
+│ *  --execution                        TEXT  [default: None] [required]                            │
+│ *  --organization-id                  TEXT  [default: None] [required]                            │
+│ *  --server                           TEXT  [default: None] [required]                            │
 │    --submodules    --no-submodules          [default: no-submodules]                              │
 │    --branch                           TEXT                                                        │
-│    --name                             TEXT  [default: workspace]                                  │
 │    --file                             TEXT  [default: boa.yaml]                                   │
 │    --log-level                        TEXT  [default: INFO]                                       │
 │    --help                                   Show this message and exit.                           │
@@ -54,9 +57,12 @@ python3 -m pip install --upgrade dist/boa_client-$VERSION-py3-none-any.whl
 | Option                          | Required | Type    | Description                             | Default                 | 
 |---------------------------------|----------|---------|-----------------------------------------|-------------------------|
 | --url                           | yes      | String  | Git Repository URL to run initial clone | `None`                  |
+| --name                          | yes      | String  | name of job                             | `None`                  | 
+| --execution                     | yes      | String  | execution number of job                 | `None`                  | 
+| --organization-id               | yes      | String  | id of organization that owns the job    | `None`                  | 
+| --server                        | yes      | String  | $PROTOCOL://HOSTNAME of boa-manager     | `None`                  | 
 | --submodules / --no-submodules  | no       | Boolean | Pull in or ignore git submodules        | `--no-submodules`       |
 | --branch                        | no       | String  | Branch to clone                         | `None (default branch)` |
-| --name                          | no       | String  | name of workspace folder                | `workspace`             |
 | --file                          | no       | String  | file containing boa job specs           | `boa.yaml`              |
 | --log-level                     | no       | String  | log level                               | `INFO`                  |
 | --help                          | no       | String  | displays help options                   | `None`                  |

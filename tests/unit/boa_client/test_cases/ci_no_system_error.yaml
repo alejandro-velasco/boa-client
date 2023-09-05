@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: BoaJob
+metadata:
+  name: test-build
+  namespace: test
+
+stages:
+  build:
+    script:
+      - 'true'
+
+    

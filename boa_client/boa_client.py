@@ -8,15 +8,21 @@ from boa_client.logging import Logger
 from boa_client.publisher import BoaClientPublisher
 def main(    
     url: Annotated[str, typer.Option()],
+    name: Annotated[str, typer.Option()],
+    execution: Annotated[str, typer.Option()],
+    organization_id: Annotated[str, typer.Option()],
+    server: Annotated[str, typer.Option()],
     submodules: bool = False,
     branch: str = "",
-    name: str = "workspace",
     file: str = 'boa.yaml',
     log_level: str = 'INFO'
 ):
     logger = Logger(level=log_level)
 
-    publisher = BoaClientPublisher(name=name)
+    publisher = BoaClientPublisher(server=server,
+                                   name=name,
+                                   execution=execution,
+                                   organization_id=organization_id)
     publisher.publish_running()
 
     try:
