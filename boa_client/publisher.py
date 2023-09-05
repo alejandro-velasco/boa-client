@@ -19,9 +19,9 @@ class BoaClientPublisher:
             'status': 'succeeded'
         }
         
-        resp = requests.post(url, 
-                             json=json,
-                             headers=headers)
+        resp = requests.put(url, 
+                            json=json,
+                            headers=headers)
         
         logging.info(resp.text)
 
@@ -35,9 +35,9 @@ class BoaClientPublisher:
             'status': 'failed'
         }
         
-        resp = requests.post(url, 
-                             json=json,
-                             headers=headers)
+        resp = requests.put(url, 
+                            json=json,
+                            headers=headers)
         
         logging.info(resp.text)
 
@@ -51,9 +51,9 @@ class BoaClientPublisher:
             'status': 'aborted'
         }
         
-        resp = requests.post(url, 
-                             json=json,
-                             headers=headers)
+        resp = requests.put(url, 
+                            json=json,
+                            headers=headers)
         
         logging.info(resp.text)
 
@@ -67,8 +67,8 @@ class BoaClientPublisher:
             'status': 'running'
         }
         
-        resp = requests.post(url, 
-                             json=json,
-                             headers=headers)
+        resp = requests.put(url, 
+                            json=json,
+                            headers=headers)
         
         logging.info(resp.text)
