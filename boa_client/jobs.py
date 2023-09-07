@@ -9,6 +9,7 @@ from boa_client.schemas import BoaJobSchema
 class BoaJob:
     def __init__(self, file, root) -> None:
         self.root = root
+        self.cwd = os.getcwd()
         self.file = file
         self.body = self._load_file()
 
@@ -24,23 +25,30 @@ class BoaJob:
         logging.info(f'Setting current working directory to {self.root}')
         os.chdir(self.root)        
 
+    def _return_to_cwd(self):
+        logging.info(f'Setting current working directory to {self.cwd}')
+        os.chdir(self.cwd)  
+
     def execute_job(self):
-        self._validate_schema()
-        self._set_root()
-        self._load_file()
+        try:
+            self._validate_schema()
+            self._set_root()
+            self._load_file()
 
-        if "git" in self.body:
-            for git_config in self.body['git']:
-                repository = GitRepository(url=git_config.get("url"))
-                repository.clone(submodules=git_config.get("submodules", False),
-                                 branch=git_config.get("branch", ""),
-                                 name=git_config.get("name", ""))
+            if "git" in self.body:
+                for git_config in self.body['git']:
+                    repository = GitRepository(url=git_config.get("url"))
+                    repository.clone(submodules=git_config.get("submodules", False),
+                                     branch=git_config.get("branch", ""),
+                                     name=git_config.get("name", ""))
+            
+            stages = self.body['stages']
+            
+            for stage_name, stage_spec in stages.items():
+                self.execute_stage(stage_name=stage_name, stage_spec=stage_spec)
+        finally:
+            self._return_to_cwd()
 
-        stages = self.body['stages']
-
-        for stage_name, stage_spec in stages.items():
-            self.execute_stage(stage_name=stage_name, stage_spec=stage_spec)
-    
     def execute_stage(self, stage_name, stage_spec):
         logging.info(f'Executing stage "{stage_name}"')
 
@@ -51,14 +59,18 @@ class BoaJob:
     def execute_script(self, script):
         for step in script:
             logging.debug(f'\n{step}')
-            p = subprocess.Popen([step], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, text=True)
+            p = subprocess.Popen([step], 
+                                 stdout=subprocess.PIPE, 
+                                 stderr=subprocess.PIPE, 
+                                 shell=True, 
+                                 text=True)
     
             output, errors = p.communicate()
 
             if p.returncode != 0:
                 # handle error
                 logging.error(errors)
-                raise SystemExit(1)
+                raise SystemError
 
             logging.info(f'{output}')
     

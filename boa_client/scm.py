@@ -25,7 +25,7 @@ class GitRepository:
         if p.returncode != 0:
             # handle error
             logging.error(errors)
-            raise SystemExit(1)
+            raise SystemError
     
         logging.info(f'{output}')
 
