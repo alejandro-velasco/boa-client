@@ -9,7 +9,7 @@ from boa_client.publisher import BoaClientPublisher
 def main(    
     url: Annotated[str, typer.Option()],
     name: Annotated[str, typer.Option()],
-    execution: Annotated[str, typer.Option()],
+    execution_id: Annotated[str, typer.Option()],
     organization_id: Annotated[str, typer.Option()],
     server: Annotated[str, typer.Option()],
     submodules: bool = False,
@@ -21,7 +21,7 @@ def main(
 
     publisher = BoaClientPublisher(server=server,
                                    name=name,
-                                   execution=execution,
+                                   execution_id=execution_id,
                                    organization_id=organization_id)
     publisher.publish_running()
 

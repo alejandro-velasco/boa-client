@@ -82,11 +82,3 @@ USER 1000
 WORKDIR /home/boa-client
 
 ENTRYPOINT ["/entrypoint.sh"]
-
-
-
-
-
-
-
-
