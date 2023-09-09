@@ -10,7 +10,7 @@ class BoaClientPublisher:
         self.organization_id = organization_id
 
     def publish_success(self):
-        url = f'{self.server}/api/job/status/{self.execution_id}'
+        url = f'{self.server}/api/jobs/status/{self.execution_id}'
         headers = {'Content-Type': 'application/json'}
         json = {'status': 'succeeded'}
         
@@ -21,7 +21,7 @@ class BoaClientPublisher:
         logging.info(response.text)
 
     def publish_failure(self):
-        url = f'{self.server}/api/job/status/{self.execution_id}'
+        url = f'{self.server}/api/jobs/status/{self.execution_id}'
         headers = {'Content-Type': 'application/json'}
         json = {'status': 'failed'}
         
@@ -32,7 +32,7 @@ class BoaClientPublisher:
         logging.info(response.text)
 
     def publish_abort(self):
-        url = f'{self.server}/api/job/status/{self.execution_id}'
+        url = f'{self.server}/api/jobs/status/{self.execution_id}'
         headers = {'Content-Type': 'application/json'}
         json = {'status': 'aborted'}
         
@@ -43,7 +43,7 @@ class BoaClientPublisher:
         logging.info(response.text)
 
     def publish_running(self):
-        url = f'{self.server}/api/job/status/{self.execution_id}'
+        url = f'{self.server}/api/jobs/status/{self.execution_id}'
         headers = {'Content-Type': 'application/json'}
         json = {'status': 'running'}
         
